@@ -1,0 +1,38 @@
+name: Build shimboot for NISSA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            fdisk \
+            dosfstools \
+            e2fsprogs \
+            squashfs-tools \
+            xz-utils \
+            curl \
+            git \
+            sudo
+
+      - name: Build shimboot (NISSA)
+        run: |
+          chmod +x build_complete.sh
+          sudo ./build_complete.sh nissa
+
+      - name: Upload image
+        uses: actions/upload-artifact@v4
+        with:
+          name: shimboot-nissa
+          path: |
+            *.img
+            *.zip
