@@ -8,6 +8,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache
+          sudo apt clean
+          df -h
+
       - name: Checkout repo
         uses: actions/checkout@v4
 
@@ -21,8 +30,7 @@ jobs:
             squashfs-tools \
             xz-utils \
             curl \
-            git \
-            sudo
+            git
 
       - name: Build shimboot (NISSA)
         run: |
@@ -36,3 +44,4 @@ jobs:
           path: |
             *.img
             *.zip
+
